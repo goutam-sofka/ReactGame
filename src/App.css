@@ -253,6 +253,10 @@ text-align: justify;
   justify-content: center;
 }
 
+.height-100 {
+  height: 100vh;
+}
+
 .heading {
   padding-top: 80px;
 }
@@ -371,12 +375,9 @@ text-align: justify;
     padding: 10px 0;
   }
 
-  .characters {
-    height: 100%;
-  }
-
   .characters .character-grid {
     grid-gap: 50px;
+    /* padding: 30px; */
   }
 }
 

@@ -6,6 +6,7 @@ import EasterEgg from './easterEgg';
 import dp from './../images/dp.png';
 
 const CharacterSelection = () => {
+  // All hooks (setState alternatives)
   const [ avengers, setAvengers ] = useState([]);
   const [ villains, setVillains ] = useState([]);
   const [ loading, setLoading ] = useState(true);
@@ -14,6 +15,7 @@ const CharacterSelection = () => {
   const [selected, setSelected] = useState(undefined);
   const isInitialMount = useRef(true);
 
+  // Functions for opening and closing the React Modal
   const openModal = () => setSelected(true);
   const closeModal = () => setSelected(undefined);
   
@@ -36,39 +38,60 @@ const CharacterSelection = () => {
   }
 
   const postCharacters = async () => {
-    const uri = 'http://localhost:3000/battles';
-    const req = new Request(uri, postOptions);
-    const response = await fetch(req);
-    const json = await response.json();
-    console.log(json);
+    try {
+      const uri = 'http://localhost:3000/battles';
+      const req = new Request(uri, postOptions);
+      const response = await fetch(req);
+      const json = await response.json();
+      console.log(json);
+    } catch (error) {
+      console.log('Error:', error)
+    }
   }
 
-  const getBattle = async () => {
-    const uri = 'http://localhost:3000/battles';
-    const req = new Request(uri, getOptions);
-    const response = await fetch(req);
-    const json = await response.json();
-    console.log(json);
-  }
+  //----------Testing the fetch-----------
+  // const getBattle = async () => {
+  //   try {
+  //     const uri = 'http://localhost:3000/battles';
+  //     const req = new Request(uri, getOptions);
+  //     const response = await fetch(req);
+  //     const json = await response.json();
+  //     console.log(json);
+  //   } catch (error) {
+  //     console.log('Error:', error)
+  //   }
+  // }
 
+  
+  //Fetch the avengers 
   const fetchAvengers = async () => {
-    const uri = 'http://localhost:3000/avengers';
-    const req = new Request(uri, getOptions);
-    const response = await fetch(req);
-    const json = await response.json();
-    setAvengers(json);
-    setLoading(false);
+    try {
+      const uri = 'http://localhost:3000/avengers';
+      const req = new Request(uri, getOptions);
+      const response = await fetch(req);
+      const json = await response.json();
+      setAvengers(json);
+      setLoading(false);
+    } catch (error) {
+      console.log('Error:', error)
+    }
   }
 
+  // Fetch the villains
   const fetchVillains = async () => {
-    let uri = 'http://localhost:3000/villains';
-    const req = new Request(uri, getOptions);
-    const response = await fetch(req);
-    const json = await response.json();
-    setVillains(json);
-    setLoading(false);
+    try {
+      let uri = 'http://localhost:3000/villains';
+      const req = new Request(uri, getOptions);
+      const response = await fetch(req);
+      const json = await response.json();
+      setVillains(json);
+      setLoading(false);
+    } catch (error) {
+      console.log('Error:', error)
+    }
   }
 
+  // Function for randomly selecting 3 villains
   const randomVillains = () => {
     const villainsID = villains.map((villain) => villain.id);
     const random = Math.floor(Math.random() * villainsID.length);
@@ -78,21 +101,25 @@ const CharacterSelection = () => {
     }
   }
 
+  // Selecting the avengers
   const pickAvenger = (id) => {
     if (!selectedAvengers.includes(id) && selectedAvengers.length < 3) {
       setSelectedAvengers([...selectedAvengers, id])
     } else if (selectedAvengers.length === 1) {
       setSelectedAvengers([]);
     } else if (selectedAvengers.includes(id)) {
-      selectedAvengers.splice(id, 1)
-      setSelectedAvengers([...selectedAvengers]);
+      const newAvengers = [...selectedAvengers];
+      newAvengers.splice(id, 1)
+      setSelectedAvengers(newAvengers);
     }
   }
 
   // componentDidMount
   useEffect(() => {
-    fetchAvengers();
-    fetchVillains();
+    setTimeout(() => {
+      fetchAvengers();
+      fetchVillains();
+    }, 2000);
   }, [])
 
   // componentDidUpdate
@@ -107,7 +134,7 @@ const CharacterSelection = () => {
   console.log(selectedVillains);
 
   return (
-    <div className='characters'>
+    <div className={loading ? 'characters height-100' : 'characters'}>
       {
         loading ? 
         <p className='loading'>loading...</p> 
