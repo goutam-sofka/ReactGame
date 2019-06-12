@@ -152,13 +152,14 @@ const CharacterSelection = () => {
           <div className="character-grid">
             {villains.map((villain) => <Villains villain={villain} key={villain.id} />)}
           </div>
+        
+          <div className="start-game margin-bottom-small">
+            <button className='btn' onClick={postCharacters}>To Battle!</button>
+          </div>
+          <img alt='dp' className='dp' src={dp} onClick={openModal}></img>
+          <EasterEgg selected={selected} closeModal={closeModal} />
         </Fragment>
       }
-      <div className="start-game margin-bottom-small">
-        <button className='btn' onClick={postCharacters}>To Battle!</button>
-      </div>
-      <img alt='dp' className='dp' src={dp} onClick={openModal}></img>
-      <EasterEgg selected={selected} closeModal={closeModal} />
     </div>
   )
 }
