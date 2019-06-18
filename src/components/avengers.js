@@ -9,10 +9,10 @@ const Avengers = ({ avenger, pickAvenger, selectedAvengers }) => {
           <p>ATK: { avenger.atq }</p>
           <p>DEF: { avenger.def }</p>
         </div>
-      <button onClick={(e) => pickAvenger(avenger.id, e)} 
-      disabled={selectedAvengers.length === 3 && !selectedAvengers.includes(avenger.id)} >
+      <button onClick={(e) => pickAvenger(avenger, e)} 
+      disabled={selectedAvengers.length === 3 && !selectedAvengers.includes(avenger)} >
         {
-          selectedAvengers.includes(avenger.id) ? 'Selected' : 'Select'
+          selectedAvengers.includes(avenger) ? 'Selected' : 'Select'
         }
       </button>
     </div>

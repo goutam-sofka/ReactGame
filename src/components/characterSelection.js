@@ -1,20 +1,23 @@
 import React, {useState, useEffect, useRef, Fragment} from 'react';
+import axios from 'axios';
 import Avengers from './avengers';
 import Villains from './villains';
 import EasterEgg from './easterEgg';
 
 import dp from './../images/dp.png';
 
-const CharacterSelection = () => {
+const CharacterSelection = ({history}) => {
   // All hooks (setState alternatives)
   const [ avengers, setAvengers ] = useState([]);
   const [ villains, setVillains ] = useState([]);
   const [ loading, setLoading ] = useState(true);
   const [ selectedAvengers, setSelectedAvengers ] = useState([]);
   const [ selectedVillains, setSelectedVillains ] = useState([]);
-  const [selected, setSelected] = useState(undefined);
+  const [ selected, setSelected ] = useState(undefined);
   const isInitialMount = useRef(true);
 
+  console.log(history);
+  
   // Functions for opening and closing the React Modal
   const openModal = () => setSelected(true);
   const closeModal = () => setSelected(undefined);
@@ -28,40 +31,55 @@ const CharacterSelection = () => {
     },
     mode: 'cors'
   }
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  }
   const postOptions = {
-    method: 'POST',
+    method: 'post',
     headers: {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`
     },
     body: JSON.stringify(selectedAvengers, selectedVillains)
   }
+  const data = JSON.stringify({selectedAvengers, selectedVillains});
+  console.log(data);
+  
 
-  const postCharacters = async () => {
-    try {
-      const uri = 'http://localhost:3000/battles';
-      const req = new Request(uri, postOptions);
-      const response = await fetch(req);
-      const json = await response.json();
-      console.log(json);
-    } catch (error) {
-      console.log('Error:', error)
+  const postCharacters = () => {
+    // if (selectedAvengers.length === 3) {
+    //   try {
+    //     const uri = 'http://localhost:3000/battles';
+    //     const req = new Request(uri, postOptions);
+    //     const response = await fetch(req);
+    //     const json = await response.json();
+    //     console.log(json);
+    //   } catch (error) {
+    //     console.log('Error:', error)
+    //   }
+    // } else {
+    //   alert('Please select 3 avengers');
+    // }
+
+    // axios.post('http://localhost:3000/battles', data, {headers: headers})
+    // .then((res) => {
+    //   console.log(res)
+    // })
+    // .catch((err) => {
+    //   console.log(err)
+    // })
+
+    if (selectedAvengers.length === 3 && selectedVillains.length === 3) {
+      history.push({
+        pathname: '/battle',
+        state: {
+          selectedAvengers,
+          selectedVillains
+        }
+      })
     }
   }
-
-  //----------Testing the fetch-----------
-  // const getBattle = async () => {
-  //   try {
-  //     const uri = 'http://localhost:3000/battles';
-  //     const req = new Request(uri, getOptions);
-  //     const response = await fetch(req);
-  //     const json = await response.json();
-  //     console.log(json);
-  //   } catch (error) {
-  //     console.log('Error:', error)
-  //   }
-  // }
-
   
   //Fetch the avengers 
   const fetchAvengers = async () => {
@@ -93,23 +111,37 @@ const CharacterSelection = () => {
 
   // Function for randomly selecting 3 villains
   const randomVillains = () => {
-    const villainsID = villains.map((villain) => villain.id);
-    const random = Math.floor(Math.random() * villainsID.length);
+    // const villainsID = villains.map((villain) => villain.id);
+    // const random = Math.floor(Math.random() * villainsID.length);
 
-    if (!selectedVillains.includes(villainsID[random]) && selectedVillains.length !== 3 && villains.length > 0) {
-      setSelectedVillains([...selectedVillains, villainsID[random]]);
+    // if (!selectedVillains.includes(villainsID[random]) && selectedVillains.length !== 3 && villains.length > 0) {
+    //   setSelectedVillains([...selectedVillains, villainsID[random]]);
+    // }
+
+    const random = Math.floor(Math.random() * villains.length);
+    if (!selectedVillains.includes(villains[random]) && selectedVillains.length !== 3 && villains.length > 0) {
+      setSelectedVillains([...selectedVillains, villains[random]])
     }
   }
 
   // Selecting the avengers
-  const pickAvenger = (id) => {
-    if (!selectedAvengers.includes(id) && selectedAvengers.length < 3) {
-      setSelectedAvengers([...selectedAvengers, id])
+  const pickAvenger = (avenger) => {
+    // if (!selectedAvengers.includes(id) && selectedAvengers.length < 3) {
+    //   setSelectedAvengers([...selectedAvengers, id])
+    // } else if (selectedAvengers.length === 1) {
+    //   setSelectedAvengers([]);
+    // } else if (selectedAvengers.includes(id)) {
+    //   const newAvengers = [...selectedAvengers];
+    //   newAvengers.splice(id, 1)
+    //   setSelectedAvengers(newAvengers);
+    // }
+    if (!selectedAvengers.includes(avenger) && selectedAvengers.length < 3) {
+      setSelectedAvengers([...selectedAvengers, avenger])
     } else if (selectedAvengers.length === 1) {
       setSelectedAvengers([]);
-    } else if (selectedAvengers.includes(id)) {
+    } else if (selectedAvengers.includes(avenger)) {
       const newAvengers = [...selectedAvengers];
-      newAvengers.splice(id, 1)
+      newAvengers.splice(avengers, 1)
       setSelectedAvengers(newAvengers);
     }
   }
@@ -132,6 +164,7 @@ const CharacterSelection = () => {
   })
 
   console.log(selectedVillains);
+  
 
   return (
     <div className={loading ? 'characters height-100' : 'characters'}>
