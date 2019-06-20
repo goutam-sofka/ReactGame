@@ -510,6 +510,9 @@ text-align: justify;
     align-self: center !important;
     margin-bottom: 20px;
   }
+  .battle {
+    width: 240px !important;
+  }
 }
 
 .Modal-egg {

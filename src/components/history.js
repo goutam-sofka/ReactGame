@@ -7,6 +7,9 @@ const History = () => {
   return (
     <div className='battles'>
       {
+        battles === null ? 
+        <h2>No battles yet</h2>
+        : 
         battles.map((battle, i) => {
           return (
             <Link key={battle.id} to={{ pathname: `/battle/${battle.id}`, state: [battle.selectedAvengers, battle.selectedVillains] }} className='battle'>
