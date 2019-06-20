@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef, Fragment} from 'react';
-import axios from 'axios';
+// import axios from 'axios';
+import uuid from 'uuid/v4';
 import Avengers from './avengers';
 import Villains from './villains';
 import EasterEgg from './easterEgg';
@@ -15,8 +16,7 @@ const CharacterSelection = ({history}) => {
   const [ selectedVillains, setSelectedVillains ] = useState([]);
   const [ selected, setSelected ] = useState(undefined);
   const isInitialMount = useRef(true);
-
-  console.log(history);
+  
   
   // Functions for opening and closing the React Modal
   const openModal = () => setSelected(true);
@@ -44,7 +44,8 @@ const CharacterSelection = ({history}) => {
     body: JSON.stringify(selectedAvengers, selectedVillains)
   }
   const data = JSON.stringify({selectedAvengers, selectedVillains});
-  console.log(data);
+
+  
   
 
   const postCharacters = () => {
@@ -69,14 +70,20 @@ const CharacterSelection = ({history}) => {
     // .catch((err) => {
     //   console.log(err)
     // })
-
-    if (selectedAvengers.length === 3 && selectedVillains.length === 3) {
+    const id = uuid();
+    if (window.localStorage.getItem('battles') === null) {
+      let battle = [];
+      battle.push({selectedAvengers, selectedVillains, id})
+      localStorage.setItem('battles', JSON.stringify(battle))
       history.push({
-        pathname: '/battle',
-        state: {
-          selectedAvengers,
-          selectedVillains
-        }
+        pathname: `/battle/${id}`
+      })
+    } else {
+      let battle = JSON.parse(window.localStorage.getItem('battles'));
+      battle.push({selectedAvengers, selectedVillains, id})
+      localStorage.setItem('battles', JSON.stringify(battle))
+      history.push({
+        pathname: `/battle/${id}`
       })
     }
   }
@@ -141,7 +148,7 @@ const CharacterSelection = ({history}) => {
       setSelectedAvengers([]);
     } else if (selectedAvengers.includes(avenger)) {
       const newAvengers = [...selectedAvengers];
-      newAvengers.splice(avengers, 1)
+      newAvengers.splice(avenger, 1);
       setSelectedAvengers(newAvengers);
     }
   }
@@ -161,10 +168,7 @@ const CharacterSelection = ({history}) => {
     } else {
       randomVillains();
     }
-  })
-
-  console.log(selectedVillains);
-  
+  })  
 
   return (
     <div className={loading ? 'characters height-100' : 'characters'}>

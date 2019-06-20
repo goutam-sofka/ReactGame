@@ -17,7 +17,7 @@ const Routes = () => {
         <Route path='/' component={HomePage} exact={true} />
         <Route path='/character-selection' component={CharacterSelection} />
         <Route path='/history' component={History} />
-        <Route path='/battle' component={Battle} />
+        <Route path='/battle/:id' component={Battle} />
         <Route path='/easter-egg-battle' component={EasterEggBattle} />
         <Route component={NotFound} />
       </Switch>

@@ -1,11 +1,20 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+import { Link } from 'react-router-dom';
 
 const History = () => {
+  const battles = JSON.parse(window.localStorage.getItem('battles'));
+
   return (
     <div className='battles'>
-      <div className='battle'>
-        Text
-      </div>
+      {
+        battles.map((battle, i) => {
+          return (
+            <Link key={battle.id} to={{ pathname: `/battle/${battle.id}`, state: [battle.selectedAvengers, battle.selectedVillains] }} className='battle'>
+              Battle:{i+1}
+            </Link>
+          )
+        })
+      }
     </div>
   )
 }
