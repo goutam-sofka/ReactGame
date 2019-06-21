@@ -504,7 +504,7 @@ text-align: justify;
     align-self: center;
   }
 
-  .Modal-egg a {
+  .Modal-egg button {
     grid-column: 1 / 2 !important;
     grid-row: 3/4 !important;
     align-self: center !important;
@@ -535,6 +535,15 @@ text-align: justify;
   grid-template-rows: auto;
 }
 
+.Modal-egg button {
+  width: 75px;
+  border: none;
+  border-radius: 20px;
+  height: 30px;
+  outline: none;
+  cursor: pointer;
+}
+
 .Modal-egg p {
   width: 170px;
   grid-column: 1 / 2;
@@ -557,7 +566,7 @@ text-align: justify;
   opacity: 1;
 }
 
-.Modal-egg a {
+.Modal-egg button {
   grid-column: 1 / span 3;
   justify-self: center;
   border: 1px solid darkgray;

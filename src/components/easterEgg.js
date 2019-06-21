@@ -1,9 +1,17 @@
 import React from 'react'
 import Modal from 'react-modal';
-import { Link } from 'react-router-dom';
 import dp from './../images/deadpool.jpg'
 
-const EasterEgg = ({ selected, closeModal }) => {
+const EasterEgg = ({ selected, closeModal, selectedVillains, history }) => {
+  const easterEggBattle = () => {
+    if (selectedVillains.length === 3) {
+      history.push({
+        pathname: 'easter-egg-battle',
+        state: {selectedVillains}
+      })
+    }
+  }  
+
   return (
     <Modal
       isOpen={!!selected}
@@ -15,7 +23,7 @@ const EasterEgg = ({ selected, closeModal }) => {
     >
     <img src={dp} alt='dp' className='dp-modal'></img>
       <p>Chimichangas!! Looks like you found me. Click on the button so we can go kick some ass.</p>
-    <Link to='easter-egg-battle' className='btn'>Kick Ass</Link>
+    <button onClick={easterEggBattle}>Kick Ass</button>
     </Modal>
   )
 }

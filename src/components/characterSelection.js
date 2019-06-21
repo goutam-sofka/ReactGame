@@ -45,9 +45,6 @@ const CharacterSelection = ({history}) => {
   }
   const data = JSON.stringify({selectedAvengers, selectedVillains});
 
-  
-  
-
   const postCharacters = () => {
     // if (selectedAvengers.length === 3) {
     //   try {
@@ -194,7 +191,7 @@ const CharacterSelection = ({history}) => {
             <button className='btn' onClick={postCharacters}>To Battle!</button>
           </div>
           <img alt='dp' className='dp' src={dp} onClick={openModal}></img>
-          <EasterEgg selected={selected} closeModal={closeModal} />
+          <EasterEgg selected={selected} selectedVillains={selectedVillains} history={history} closeModal={closeModal} />
         </Fragment>
       }
     </div>
