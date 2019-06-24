@@ -123,7 +123,7 @@ const CharacterSelection = ({history}) => {
     // }
 
     const random = Math.floor(Math.random() * villains.length);
-    if (!selectedVillains.includes(villains[random]) && selectedVillains.length !== 3 && villains.length > 0) {
+    if (!selectedVillains.includes(villains[random]) && selectedVillains.length !== 3 && villains.length === 4) {
       setSelectedVillains([...selectedVillains, villains[random]])
     }
   }
@@ -145,8 +145,8 @@ const CharacterSelection = ({history}) => {
       setSelectedAvengers([]);
     } else if (selectedAvengers.includes(avenger)) {
       const newAvengers = [...selectedAvengers];
-      newAvengers.splice(avenger, 1);
-      setSelectedAvengers(newAvengers);
+      const filteredAvengers = newAvengers.filter((av) => av !== avenger);
+      setSelectedAvengers(filteredAvengers);
     }
   }
 
@@ -166,6 +166,8 @@ const CharacterSelection = ({history}) => {
       randomVillains();
     }
   })  
+
+  console.log(selectedVillains);
 
   return (
     <div className={loading ? 'characters height-100' : 'characters'}>
