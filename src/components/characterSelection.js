@@ -145,7 +145,7 @@ const CharacterSelection = ({history}) => {
       setSelectedAvengers([]);
     } else if (selectedAvengers.includes(avenger)) {
       const newAvengers = [...selectedAvengers];
-      const filteredAvengers = newAvengers.filter((av) => av !== avenger);
+      const filteredAvengers = newAvengers.filter((filtered) => filtered !== avenger);
       setSelectedAvengers(filteredAvengers);
     }
   }

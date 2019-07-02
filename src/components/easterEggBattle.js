@@ -33,6 +33,15 @@ const EasterEggBattle = ({ history }) => {
       attackedHp: villain[2].hp -= deadpool.atq
     }
   ]
+
+  const villainStats = villain.map((villain, i) => {
+    return <p className='battle-stats' key={i + 330}>{villain.name} : {villain.hp} {villain.hp <= 0 ? 'dead' : 'alive'} </p>
+  })
+
+  let outcome;
+  if (deadpool.hp > 0 && villain[0].hp <= 0 && villain[1].hp <= 0 && villain[2].hp <= 0) {
+    outcome = <div className='battle'>Deadpool won the game... DUH</div>
+  }
   
   return (
     <div className='battles'>
@@ -49,6 +58,15 @@ const EasterEggBattle = ({ history }) => {
           )
         })
       }
+
+      <div className="fixed-results">
+        <p className='battle-stats'>
+        {deadpool.name} : {deadpool.hp} {deadpool.hp <= 0 ? 'dead' : 'alive'}
+        </p>
+        <p>VS</p>
+        {villainStats}
+      </div>
+      {outcome}
     </div>
   )
 }

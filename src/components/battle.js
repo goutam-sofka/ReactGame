@@ -5,6 +5,8 @@ const Battle = ({ match }) => {
   const battleId = battles.find((battle) => battle.id === match.params.id)
   const avenger = battleId.selectedAvengers;
   const villain = battleId.selectedVillains;
+
+  
  
   // Better example
   const battle = [
@@ -34,10 +36,44 @@ const Battle = ({ match }) => {
     },
   ]
 
+  const avengerStats = avenger.map((avenger, i) => {
+    return <p className='battle-stats' key={i+5}>{avenger.name} : {avenger.hp} {avenger.hp <= 0 ? 'dead' : 'alive'}</p>
+  })
+
+  const villainStats = villain.map((villain, i) => {
+    return <p className='battle-stats' key={i + 20}>{villain.name} : {villain.hp} {villain.hp <= 0 ? 'dead' : 'alive'} </p>
+  })
+
+
+  let outcome;
+  // if (avenger[0].hp === 0 && avenger[1].hp === 0 && avenger[2].hp === 0) {
+  //   outcome = <div className='battle'>Villains won the game</div>
+  // } else if (villain[0].hp === 0 && villain[1].hp === 0 && villain[2].hp === 0) {
+  //   outcome = <div className='battle'>Avengers won the game</div>
+  // } else if (avengerHp !== 0 && villainHp !== 0) {
+  //   outcome = <div className='battle'>The game is a draw</div> 
+  // }
+
+  const villainWin = avenger[0].hp <= 0 && avenger[1].hp <= 0 && avenger[2].hp <= 0;
+  const avengerWin = villain[0].hp <= 0 && villain[1].hp <= 0 && villain[2].hp <= 0;
+  const drawGame = (avenger[0].hp > 0 || avenger[1].hp > 0 || avenger[2].hp > 0) && (villain[0].hp > 0 || villain[1].hp > 0 || villain[2].hp > 0);
+
+  if (avengerWin) {
+    outcome = <div className='battle'>Villains won the game</div>
+  } else if (villainWin) {
+    outcome = <div className='battle'>Avengers won the game</div>
+  } else if (drawGame) {
+    outcome = <div className='battle'>The game is a draw</div>
+  }
+
+  
+  console.log(villain[0].hp > 0 && villain[1].hp > 0 && villain[2].hp > 0);
+  
   
   
   return (
     <div className='battles'>
+    
       {
         battle.map((battle, i) => {
           return (
@@ -51,6 +87,15 @@ const Battle = ({ match }) => {
           )
         })
       }
+
+      {outcome}
+
+      <div className="fixed-results">
+        {avengerStats}
+        <p>VS</p>
+        {villainStats}
+      </div>
+      
     </div>
   )
 }
